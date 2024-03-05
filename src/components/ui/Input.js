@@ -20,6 +20,7 @@ const Input = ({
   onchange,
   refrence,
   isOpenDropdown,
+  value,
 }) => {
   const [show, setShow] = useState(false);
 
@@ -72,6 +73,7 @@ const Input = ({
         <input
           disabled={disabled}
           onChange={onchange}
+          defaultValue={value}
           id={name}
           multiple
           ref={refrence}

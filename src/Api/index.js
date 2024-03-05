@@ -30,5 +30,11 @@ API.loginUser = (data) => {
 API.getForms = () => {
   return API.get("form");
 };
+API.changePassword = (data) => {
+  return API.patch("admin/password" , data);
+};
+API.updateProfile = (data) => {
+  return API.patch("admin" , data);
+};
 
 export { API };

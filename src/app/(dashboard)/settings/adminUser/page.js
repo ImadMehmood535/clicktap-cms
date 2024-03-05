@@ -14,6 +14,7 @@ import { useToast } from "@/hooks/useToast";
 import CreatePopUp from "@/components/popups/Create/CreatePopup";
 import CreateBlog from "@/components/screens/boxtype/CreateModal";
 import ChangePasword from "@/components/auth/ChangePasword";
+import CreatePopUPGeneral from "@/components/popups/Create/CreatePopUPGeneral";
 
 const Page = () => {
   const { resolveToast, rejectToast } = useToast();
@@ -86,9 +87,9 @@ const Page = () => {
               isLoading={modal}
             />
           </div>
-          <CreatePopUp modal={modal} setModal={setModal}>
+          <CreatePopUPGeneral modal={modal} setModal={setModal}>
             <ChangePasword setModal={setModal} modal={modal} />
-          </CreatePopUp>
+          </CreatePopUPGeneral>
         </div>
       </section>
     </main>

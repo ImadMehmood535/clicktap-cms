@@ -6,27 +6,32 @@ import { changePasswordSchema } from "@/lib/yup-validations";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { API } from "@/Api";
 import { useToast } from "@/hooks/useToast";
-export default function ChangePasword({ setModal, modal }) {
+import { useAuth } from "@/store/AuthContext";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
+export default function ChangeProfile({ setModal, modal }) {
   const { resolveToast, rejectToast } = useToast();
   const [isloading, setIsloading] = useState(false);
+  const { authState } = useAuth();
+  const router = useRouter();
 
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm({
-    resolver: yupResolver(changePasswordSchema),
-  });
+  } = useForm();
 
   const onSubmit = async (data) => {
     try {
-      console.log(data);
-      const res = await API.changePassword(data);
+      const res = await API.updateProfile(data);
       if (res?.data?.status?.success) {
         setIsloading(false);
         setModal(false);
-        resolveToast("Your password has been changed Successfully");
+        resolveToast("Successfully Updated Profile");
+        Cookies.set("email", res?.data?.data?.email);
+        Cookies.set("name", res?.data?.data?.name);
+        window.location.reload();
       }
     } catch (err) {
       if (err?.response?.data?.message[0] !== "I") {
@@ -44,17 +49,19 @@ export default function ChangePasword({ setModal, modal }) {
           <h2 className="text-xl font-bold mb-4">Change Password</h2>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Input
-              label="OLD PASSWORD"
-              name="oldPassword"
-              type="password"
+              label="Name"
+              name="name"
+              value={authState?.name}
+              type="text"
               placeholder="**************"
               register={register}
               errors={errors}
             />
             <Input
-              label="ENTER NEW PASSWORD"
-              name="newPassword"
-              type="password"
+              label="Email"
+              name="email"
+              type="email"
+              value={authState?.email}
               placeholder="**************"
               register={register}
               errors={errors}
@@ -62,7 +69,7 @@ export default function ChangePasword({ setModal, modal }) {
             <div className="mt-8 float-right">
               <Button
                 type="submit"
-                text="Change Password"
+                text="Update Profile"
                 className="flex items-center justify-center"
                 onClick={() => {}}
                 isLoading={isloading}

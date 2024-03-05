@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useReducer,
-} from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 
 import Cookies from "js-cookie";
 
@@ -18,7 +13,7 @@ const initialState = {
   isLoggedIn: false,
   role: null,
   email: null,
-  name:null
+  name: null,
 };
 const authReducer = (state, action) => {
   switch (action.type) {
@@ -27,6 +22,7 @@ const authReducer = (state, action) => {
         ...state,
         isLoggedIn: true,
         email: action.payload.email,
+        name: action.payload.name,
         role: "admin",
         loading: false,
       };
@@ -51,9 +47,13 @@ const AuthProvider = ({ children }) => {
     const access_token = Cookies.get("token");
     const email = Cookies.get("email");
     const role = Cookies.get("role");
+    const name = Cookies.get("name");
 
     if (access_token) {
-      authDispatch({ type: "LOGIN", payload: { email: email, role: role } });
+      authDispatch({
+        type: "LOGIN",
+        payload: { email: email, role: role, name: name },
+      });
     } else {
       authDispatch({ type: "LOGOUT" });
     }
